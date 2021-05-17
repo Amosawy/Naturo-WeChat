@@ -1,0 +1,16 @@
+netty:
+  port: 8084
+spring:
+  cloud:
+    config:
+      uri: http://localhost:8081
+      name: application
+      profile: rabbitmq,redis
+  application:
+    name: netty-server
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8080/eureka
+  instance:
+    prefer-ip-address: true

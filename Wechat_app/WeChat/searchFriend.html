@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<script src="js/WeChat_utils.js"></script>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function () {
+			    document.getElementById("searchFriend_but").addEventListener("tap",function(){
+					//获取用户输入值
+					var username=document.getElementById("username").value;
+					util.ajax({
+						url:url.getUserByUsername_url,
+						data:{ 
+							"username" : username
+						},
+						success:function(resp){
+							if(resp.data == null){
+								alert("此用户不存在");
+								document.getElementById("username").value="";
+							}else{
+								//打开搜索结果页面
+								// plus.webview.open("searchFriendResult.html","searchFriendResult.html");
+								mui.openWindow({
+									url : 'searchFriendResult.html',
+									id : 'searchFriendResult.html',
+									extras : { //参数
+										"username" : resp.data.username,
+										"nickname" : resp.data.nickname,
+										"min_head" : resp.data.min_head
+									}
+								});
+							}
+						}
+					});
+					
+				})
+			})
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="touch-action: none;"></a>
+			<h1 class="mui-title">搜索好友</h1>
+		</header>
+		<div style="margin-top: 50px;">
+			<input type="text" id="username" />
+			<div class="mui-button-row">
+				<button type="button" id="searchFriend_but" class="mui-btn mui-btn-success "style="width: 80%;">搜索</button>
+			</div>
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.indexedlist.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				height: 100%; 
+				overflow: hidden;
+			}
+			.mui-bar {
+				-webkit-box-shadow: none;
+				box-shadow: none;
+			}
+			.mui-table-view-divider{
+				display: none;
+			}
+		</style>
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.indexedlist.js"></script>
+		<script src="js/WeChat_utils.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+			  pullRefresh : {
+			    container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+			    down : {
+			      style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+			      auto: true,//可选,默认false.首次加载自动上拉刷新一次
+			      callback :refreshFriendList //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			    }
+			  }
+			});
+			function refreshFriendList(){
+				var list = document.querySelectorAll(".mui-table-view-cell");
+				var liElelist = document.querySelectorAll(".mui-table-view-divider");
+				for(var j=0;j<liElelist.length;j++){
+					liElelist[j].style.display="none";
+				}
+				for(var i=0;i<list.length;i++){
+					list[i].remove();
+				}
+				ajaxFriend();
+			}
+			mui.plusReady(function () {
+				//获取本地好友列表
+				var friendList = util.getFriendList();
+				if(friendList){
+					showFriendList(friendList);
+				}else{
+					ajaxFriend();
+				} 
+			    //给每个好友添加触屏事件
+			    mui("li").on('tap','a',function(){
+			    	var fid = this.getAttribute("fid");
+					mui.openWindow({
+						url : 'chat.html',
+						id : 'chat_'+fid,
+						extras : { //参数
+							"fid" : fid
+						}
+					});
+			    }) 
+				
+			});
+			function ajaxFriend(){
+				var user=util.getUser();
+				util.ajax({ 
+					url:url.getFriendListById_url,
+					data:{
+						"user_id":user.id 
+					},
+					success:function(resp){
+						if(resp.code == "ok"){
+							var friendList=resp.data;
+							util.setFriendList(friendList);
+							showFriendList(friendList);
+							mui('#refreshContainer').pullRefresh().endPulldown();
+						}
+					}
+				})
+			}
+			function showFriendList(friendList){
+				for(var i=0;i<friendList.length;i++){
+					var f=friendList[i];
+					var friend=f.user; //好友对象
+					var friend_py=friend.pinyin; //好友拼音
+					var pyIndex=friend_py.substr(0,1);
+					var liEle=document.getElementById("py_"+pyIndex); //获得对应的字母索引
+					if(liEle){
+						//显示好友字母索引
+						liEle.style.display="block";
+						var html = "";
+						html+='<li class="mui-table-view-cell mui-media" >';
+						html+='<a href="javascript:;" fid="'+friend.id+'">';
+						if(friend.min_head){ 
+							html+='<img class="mui-media-object mui-pull-left" src="'+friend.min_head+'">';
+						}else{
+							html+='<img class="mui-media-object mui-pull-left" src="image/welcome.jpg">';
+						} 
+						html+='<div class="mui-media-body" style="line-height:45px">';
+						if(f.remark){
+							html+=f.remark; 
+						}else{ 
+							html+=friend.nickname; 
+						}
+						html+='</div>';
+						html+='</a>';
+						html+='</li>';
+						liEle.insertAdjacentHTML("beforeend",html);
+					}
+				}
+			}
+			mui.ready(function() {
+				var header = document.querySelector('header.mui-bar');
+				var list = document.getElementById('list');
+				//calc hieght
+				list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+				//create
+				window.indexedList = new mui.IndexedList(list);
+			});
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">通讯录</h1>
+		</header>
+		<div class="mui-content"> 
+			<div id='list' class="mui-indexed-list">
+				<div class="mui-indexed-list-search mui-input-row mui-search">
+					<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="搜索">
+				</div>
+				<div class="mui-indexed-list-bar">
+					<a>A</a>
+					<a>B</a>
+					<a>C</a>
+					<a>D</a>
+					<a>E</a>
+					<a>F</a>
+					<a>G</a>
+					<a>H</a>
+					<a>I</a>
+					<a>J</a>
+					<a>K</a>
+					<a>L</a>
+					<a>M</a>
+					<a>N</a>
+					<a>O</a>
+					<a>P</a>
+					<a>Q</a>
+					<a>R</a>
+					<a>S</a>
+					<a>T</a>
+					<a>U</a>
+					<a>V</a>
+					<a>W</a>
+					<a>X</a>
+					<a>Y</a>
+					<a>Z</a>
+				</div>
+				<div class="mui-indexed-list-alert"></div>
+				<div class="mui-indexed-list-inner">
+					<div class="mui-indexed-list-empty-alert">没有数据</div>
+					<ul class="mui-table-view" id="refreshContainer">
+						<li id="py_a" data-group="A" class="mui-table-view-divider mui-indexed-list-group">A</li>
+						<li id="py_b" data-group="B" class="mui-table-view-divider mui-indexed-list-group">B</li>
+						<li id="py_c" data-group="C" class="mui-table-view-divider mui-indexed-list-group">C</li>
+						<li id="py_d" data-group="D" class="mui-table-view-divider mui-indexed-list-group">D</li>
+						<li id="py_e" data-group="E" class="mui-table-view-divider mui-indexed-list-group">E</li>
+						<li id="py_f" data-group="F" class="mui-table-view-divider mui-indexed-list-group">F</li>
+						<li id="py_g" data-group="G" class="mui-table-view-divider mui-indexed-list-group">G</li>
+						<li id="py_h" data-group="H" class="mui-table-view-divider mui-indexed-list-group">H</li>
+						<li id="py_j" data-group="J" class="mui-table-view-divider mui-indexed-list-group">J</li>
+						<li id="py_k" data-group="K" class="mui-table-view-divider mui-indexed-list-group">K</li>
+						<li id="py_l" data-group="L" class="mui-table-view-divider mui-indexed-list-group">L</li>
+						<li id="py_m" data-group="M" class="mui-table-view-divider mui-indexed-list-group">M</li>
+						<li id="py_n" data-group="N" class="mui-table-view-divider mui-indexed-list-group">N</li>
+						<li id="py_p" data-group="P" class="mui-table-view-divider mui-indexed-list-group">P</li>
+						<li id="py_q" data-group="Q" class="mui-table-view-divider mui-indexed-list-group">Q</li>
+						<li id="py_r" data-group="R" class="mui-table-view-divider mui-indexed-list-group">R</li>
+						<li id="py_s" data-group="S" class="mui-table-view-divider mui-indexed-list-group">S</li>
+						<li id="py_t" data-group="T" class="mui-table-view-divider mui-indexed-list-group">T</li>
+						<li id="py_w" data-group="W" class="mui-table-view-divider mui-indexed-list-group">W</li>
+						<li id="py_x" data-group="X" class="mui-table-view-divider mui-indexed-list-group">X</li>
+						<li id="py_y" data-group="Y" class="mui-table-view-divider mui-indexed-list-group">Y</li>
+						<li id="py_z" data-group="Z" class="mui-table-view-divider mui-indexed-list-group">Z</li>					
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<ul class="mui-table-view">
+			
+			
+		</ul>
+	</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/cirlceImage.css" rel="stylesheet"/>
+		<link href="css/mui.css" rel="stylesheet" />
+		<script src="js/mui.js"></script>
+		<script src="js/WeChat_utils.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function () {
+				//触屏事件
+			    document.getElementById("newuser_but").addEventListener("tap",function(){
+					//打开注册页面
+					plus.webview.open("register.html","register.html");
+					
+				});
+				
+				document.getElementById("login_but").addEventListener("tap",function(){
+					//获取值
+					var username=document.getElementById("username").value;
+					var password=document.getElementById("password").value;
+					plus.device.getInfo({
+						success:function(e){  
+							console.info('getDeviceInfo succes : '+JSON.stringify(e));
+							//发送请求
+							util.ajax({
+								url:url.login_url,
+								data:{
+									"username" : username,
+									"password" : password,
+									"did" : e.uuid
+								},
+								success:function(data){
+									//服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.code == "ok"){
+										data.msg="登陆成功";
+										//把用户对象保存到本机数据库
+										var user=data.data;
+										util.setUser(user);
+										//跳转到首页
+										var cpage=plus.webview.currentWebview();
+										plus.webview.open("index.html","index.html");
+										cpage.close();
+									}
+									plus.nativeUI.toast(data.msg);
+								}
+							})
+						}, 
+					});
+					
+					
+				});
+			});
+		</script>
+	</head>
+	<body style="text-align: center;">
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">登录</h1>
+		</header>
+		<div style="margin-top: 250px;">
+		<img src="image/welcome.jpg"  style="width: 120px;" class="getgold_top_head_img"/>
+		<form class="mui-input-group" style="">
+		    <div class="mui-input-row">
+		        <label>用户名</label>
+		    <input id="username" type="text" class="mui-input-clear" placeholder="请输入用户名">
+		    </div>
+		    <div class="mui-input-row">
+		        <label>密码</label>
+		        <input id="password" type="password" class="mui-input-password" placeholder="请输入密码">
+		    </div>
+		    <div class="mui-button-row">
+		        <button type="button" id="login_but" class="mui-btn mui-btn-success mui-btn-outlined"style="width: 80%;">登录</button>
+		    </div>
+		</form>
+		<a id="newuser_but">新用户</a> <a>忘记密码</a>
+		<a href="http://172.20.10.4:8888/user/test">测试</a>
+		</div>
+	</body>
+	
+</html>

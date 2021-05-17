@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    config:
+      uri: http://localhost:8081
+      name: application
+      profile: user,datasource,redis,rabbitmq
+  servlet:
+#    设置文件上传大小 -1为不做限制
+    multipart:
+      max-file-size: -1
+      max-request-size: -1

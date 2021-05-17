@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<script src="js/mui.js"></script>
+		<script src="js/WeChat_utils.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function () {
+			    var user=util.getUser();
+			    if(user.head != null){
+			    	document.getElementById("showHead").src=user.head;
+			    }
+				document.getElementById("upload_but").addEventListener("tap",function(){
+					//打开本地相册
+					 plus.gallery.pick( function(path){
+							//创建一个上传任务对象
+					    	var task = plus.uploader.createUpload( url.upload_Image_url, 
+					    			{},
+					    			function ( t, status ) {
+										// t为字符串，要转为JSON
+					    				var resp=JSON.parse(t.responseText);
+										// 上传完成
+					    				if(resp.code == "ok"){
+											var head=resp.data.head;
+											var min_head=resp.data.min_head;
+											//显示用户上传的头像
+											document.getElementById("showHead").src=head;
+											//修改本机中的用户信息
+											user.head=head;
+											user.min_head=min_head;
+											util.setUser(user);
+											
+											//返回上一级页面
+											mui.back();
+											//指定调用某个页面中的某个函数
+											plus.webview.getWebviewById("me.html").evalJS("updateMinHead()");
+											//刷新此页面
+											plus.webview.currentWebview().reload();
+											
+										}else{
+											plus.nativeUI.toast("上传失败");
+										}
+					    			}
+					    		);
+							//添加上传文件	
+							task.addFile( path, {key:"file"} );
+					    	//设置其他参数
+							task.addData( "userId", user.id+"");
+					   		//开始上传
+					   		task.start();
+					 });
+				})
+				document.getElementById("camera_but").addEventListener("tap",function(){
+					var cmr = plus.camera.getCamera();
+					cmr.captureImage( function( path ){
+							var task = plus.uploader.createUpload( url.upload_Image_url,
+									{},
+									function ( t, status ) {
+										// t为字符串，要转为JSON
+										var resp=JSON.parse(t.responseText);
+										// 上传完成
+										if(resp.code == "ok"){
+											var head=resp.data.head;
+											var min_head=resp.data.min_head;
+											//显示用户上传的头像
+											document.getElementById("showHead").src=head;
+											//修改本机中的用户信息
+											user.head=head;
+											user.min_head=min_head;
+											util.setUser(user);
+											
+											//返回上一级页面
+											mui.back();
+											//指定调用某个页面中的某个函数
+											plus.webview.getWebviewById("me.html").evalJS("updateMinHead()");
+											//刷新此页面
+											plus.webview.currentWebview().reload();
+											
+										}else{
+											plus.nativeUI.toast("上传失败");
+										}
+									}
+								);
+							//添加上传文件	
+							task.addFile( path, {key:"file"} );
+							//设置其他参数
+							task.addData( "userId", user.id+"");
+							//开始上传
+							task.start(); 
+						}
+					);
+				})
+			})
+		</script>
+	</head>
+
+	<body style="text-align: center;">
+		<header class="mui-bar mui-bar-nav" style="touch-action: none;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的头像</h1>
+		</header>
+		<img id="showHead" src="" style="margin-top: 45px; height: 300px;"/>
+		<div id="sheet" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+			  <li class="mui-table-view-cell" id="upload_but">
+				<a href="#">从相册选择</a>
+			  </li>
+			  <li class="mui-table-view-cell" id="camera_but">
+				<a href="#">拍照</a>
+			  </li>
+			</ul>
+			
+		</div>
+		<a href="#sheet" id="openSheet" class="mui-btn mui-btn-primary mui-btn-block">上传头像</a>
+		
+	</body>
+
+</html>

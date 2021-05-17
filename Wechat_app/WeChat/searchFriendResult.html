@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<script src="js/mui.js"></script>
+		<script src="js/WeChat_utils.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function () {
+			    var username = plus.webview.currentWebview().username;
+				var nickname = plus.webview.currentWebview().nickname;
+				var min_head = plus.webview.currentWebview().min_head;
+				
+				document.getElementById("min_head").src=min_head;
+				document.getElementById("username").innerText=username;
+				document.getElementById("nickname").innerText=nickname;
+				
+				document.getElementById("addFriend_but").addEventListener("tap",function(){
+					//打开好友认证页面
+					var user = util.getUser();
+					if(user.username == username){
+						alert("你不能添加自己为好友");
+					}else{
+						mui.openWindow({
+							url : 'friend_auth.html',
+							id : 'friend_auth.html',
+							extras : { //参数
+								"username" : username
+							}
+						});
+					}
+				})
+			})
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="touch-action: none;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">好友</h1>
+		</header>
+		<ul class="mui-table-view" style="margin-top: 45px;">
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<img id="min_head" class="mui-media-object mui-pull-left" src="">
+					<div class="mui-media-body" id="username">
+					</div>
+					<div class="mui-media-body" id="nickname">
+					</div>
+				</a>
+			</li>
+		</ul>
+		<div class="mui-button-row">
+			<button type="button" id="addFriend_but" class="mui-btn mui-btn-success "style="width: 80%;">添加好友</button>
+		</div>
+	</body>
+
+</html>

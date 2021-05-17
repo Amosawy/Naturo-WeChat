@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="WeChat-entity" />
+        <module name="WeChat-gateway" />
+        <module name="WeChat" />
+        <module name="WeChat-config-server" />
+        <module name="WeChat-service-api" />
+        <module name="WeChat-friend" />
+        <module name="websocket" />
+        <module name="WeChat-user" />
+        <module name="WeChat_web" />
+        <module name="WeChat-eureka" />
+        <module name="WeChat-common" />
+        <module name="WeChat-message" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="websocket" target="8" />
+      <module name="WeChat" target="1.8" />
+      <module name="WeChat-common" target="8" />
+      <module name="WeChat-config-server" target="1.8" />
+      <module name="WeChat-entity" target="8" />
+      <module name="WeChat-eureka" target="1.8" />
+      <module name="WeChat-friend" target="1.8" />
+      <module name="WeChat-gateway" target="1.8" />
+      <module name="WeChat-message" target="1.8" />
+      <module name="WeChat-service-api" target="8" />
+      <module name="WeChat-user" target="1.8" />
+      <module name="WeChat_web" target="8" />
+      <module name="xxxx" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="WeChat" options="-parameters" />
+      <module name="WeChat-config-server" options="-parameters" />
+      <module name="WeChat-eureka" options="-parameters" />
+      <module name="WeChat-friend" options="-parameters" />
+      <module name="WeChat-gateway" options="-parameters" />
+      <module name="WeChat-message" options="-parameters" />
+      <module name="WeChat-user" options="-parameters" />
+      <module name="xxxx" options="-parameters" />
+    </option>
+  </component>
+</project>

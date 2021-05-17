@@ -1,0 +1,12 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: friend-web
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8080/eureka
+  instance:
+    prefer-ip-address: true
+#开启目标服务的IP注册 不开启gateway访问不到!!!!!!!

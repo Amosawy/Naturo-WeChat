@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<script src="js/mui.js"></script>
+		<script src="js/WeChat_utils.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			
+			mui.plusReady(function () {
+				var user=util.getUser();
+				document.getElementById("username").innerText=user.username;
+				document.getElementById("nickname").innerText=user.nickname;
+			    updateMinHead();
+				document.getElementById("minHead_but").addEventListener("tap",function(){
+					//打开头像展示页面
+					plus.webview.open("showHead.html","showHead.html")
+				})
+				
+				document.getElementById("logout_but").addEventListener("tap",function(){
+					//把本地的用户设置为null
+					util.setUser(null);
+					util.setFriendList(null);
+					var cpage=plus.webview.currentWebview();
+					plus.webview.getWebviewById("index.html").evalJS("closeConn()");
+					plus.webview.getWebviewById("index.html").close(); 
+					plus.webview.open("login.html","login.html");
+					cpage.close();
+				})
+			})
+			
+			function updateMinHead(){
+				var user=util.getUser();
+				if(user.min_head!=null){
+					document.getElementById("min_head").src=user.min_head;
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">我</h1>
+		</header>
+		<ul class="mui-table-view" style="margin-top: 45px;">
+			<li class="mui-table-view-cell mui-media" id="minHead_but">
+				<a href="javascript:;">
+					<img id="min_head" class="mui-media-object mui-pull-right" src="image/default.jpg">
+					<div class="mui-media-body" style="line-height:45px;">
+						头像
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<span class=" mui-pull-right" id="username"></span>
+					<div class="mui-media-body">
+						用户名
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<span class="mui-pull-right" id="nickname"></span>
+					<div class="mui-media-body">
+					    昵称
+					</div>
+				</a>
+			</li>
+		</ul>
+		<ul class="mui-table-view" style="margin-top: 20px;">
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<div class="mui-media-body" id="logout_but" style="color: red;text-align: center;">
+						注销账号
+					</div>
+				</a>
+			</li>
+		</ul>
+	</body>
+
+</html>

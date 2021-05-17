@@ -1,0 +1,20 @@
+server:
+  port: 8888
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-web
+          uri: lb://USER-WEB
+          predicates:
+            - Path=/user/**,/res/**
+        - id: friend-web
+          uri: lb://FRIEND-WEB
+          predicates:
+            - Path=/friend/**
+  application:
+    name: WeChat-gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8080/eureka

@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<script src="js/mui.js"></script>
+		<script src="js/WeChat_utils.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function () {
+			    var user = util.getUser();
+				util.ajax({ 
+					url : url.getMyFriendApplyList_url,
+					data : {
+						"userid" : user.id
+					},
+					success : function(resp){
+						if(resp.code == "ok"){
+							var newFriendList = resp.data;
+							var html="";
+							for(var i=newFriendList.length-1;i>=0;i--){
+								var newFriend = newFriendList[i];
+								html+='<li class="mui-table-view-cell mui-media">';
+								html+='<a href="javascript:;">'; 
+								if(newFriend.friendApply.min_head!=null){
+									html+='<img class="mui-media-object mui-pull-left" src="'+newFriend.friendApply.min_head+'">';
+								}else{
+									html+='<img class="mui-media-object mui-pull-left" src="image/welcome.jpg">';
+								}
+								html+='<div class="mui-media-body">';
+								html+=newFriend.friendApply.nickname;
+								html+='</div>'; 
+								html+='<div class="mui-media-body">';
+								html+=newFriend.apply_msg;
+								html+='</div>';
+								html+='</a>';
+								if(newFriend.status == 1){
+									html+='<button type="button" id="'+newFriend.id+'" num="2" class="mui-btn mui-btn-success" style="right: 80px;">同意</button>';
+									html+='<button type="button" id="'+newFriend.id+'" num="3" class="mui-btn mui-btn-danger">拒绝</button>';
+								}else if(newFriend.status == 2){
+									html+='<button type="button" class="mui-btn mui-btn-success" style="width:30%">已添加</button>';
+								}else if(newFriend.status == 3){
+									html+='<button type="button" class="mui-btn mui-btn-danger" style="width:30%">已拒绝</button>';
+								}
+								html+='</li>';
+							}
+							document.getElementById("newFriendList").innerHTML=html;
+						}else{
+							plus.nativeUI.toast(resp.msg);
+						}
+					}
+				});
+				mui(".mui-table-view").on('tap','.mui-btn',function(){
+					var status=this.getAttribute("num");
+					var friendApplyId=this.getAttribute("id");
+					util.ajax({
+						url:url.updateFriendApplyStatus_url,
+						data:{
+							"status":status,
+							"id":friendApplyId
+						},
+						success:function(resp){
+							location.reload();
+							plus.webview.getWebviewById("friend.html").evalJS("refreshFriendList()");
+						}
+					})
+				}) 
+			})
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="touch-action: none;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新好友</h1>
+		</header>
+		<ul class="mui-table-view" style="margin-top: 45px;" id="newFriendList">
+			
+		</ul>
+	</body>
+
+</html>

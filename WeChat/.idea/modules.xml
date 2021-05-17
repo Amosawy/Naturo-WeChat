@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/WeChat.iml" filepath="$PROJECT_DIR$/WeChat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeChat-common/WeChat-common.iml" filepath="$PROJECT_DIR$/WeChat-common/WeChat-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeChat_web/WeChat-config-server/WeChat-config-server.iml" filepath="$PROJECT_DIR$/WeChat_web/WeChat-config-server/WeChat-config-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeChat-entity/WeChat-entity.iml" filepath="$PROJECT_DIR$/WeChat-entity/WeChat-entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeChat_web/WeChat-eureka/WeChat-eureka.iml" filepath="$PROJECT_DIR$/WeChat_web/WeChat-eureka/WeChat-eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeChat_web/WeChat-friend/WeChat-friend.iml" filepath="$PROJECT_DIR$/WeChat_web/WeChat-friend/WeChat-friend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeChat_web/WeChat-gateway/WeChat-gateway.iml" filepath="$PROJECT_DIR$/WeChat_web/WeChat-gateway/WeChat-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeChat_web/WeChat-message/WeChat-message.iml" filepath="$PROJECT_DIR$/WeChat_web/WeChat-message/WeChat-message.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeChat-service-api/WeChat-service-api.iml" filepath="$PROJECT_DIR$/WeChat-service-api/WeChat-service-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeChat_web/WeChat-user/WeChat-user.iml" filepath="$PROJECT_DIR$/WeChat_web/WeChat-user/WeChat-user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeChat_web/WeChat_web.iml" filepath="$PROJECT_DIR$/WeChat_web/WeChat_web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/websocket/websocket.iml" filepath="$PROJECT_DIR$/websocket/websocket.iml" />
+    </modules>
+  </component>
+</project>
