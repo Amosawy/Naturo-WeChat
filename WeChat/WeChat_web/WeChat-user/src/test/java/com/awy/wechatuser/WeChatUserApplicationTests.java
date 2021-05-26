@@ -1,8 +1,14 @@
 package com.awy.wechatuser;
 
 
+import com.awy.Util.PinyinTool;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,9 +23,17 @@ import java.io.IOException;
 class WeChatUserApplicationTests {
 
     @Test
-    void contextLoads() throws IOException {
-        reduceImg("H:/移动app/WeChat/res/Amos.jpg","H:/移动app/WeChat/res/Amos_100x100.jpg",100,100);
+    void contextLoads() throws IOException, BadHanyuPinyinOutputFormatCombination {
+//        reduceImg("H:/移动app/WeChat/res/Amos.jpg","H:/移动app/WeChat/res/Amos_100x100.jpg",100,100);
+        TestPinyin();
     }
+    public static void TestPinyin() throws BadHanyuPinyinOutputFormatCombination {
+        PinyinTool tool=new PinyinTool();
+        System.out.println(tool.toPinYin("艾文宇","", PinyinTool.Type.LOWERCASE));
+
+    }
+
+
     public static void reduceImg(String imgsrc, String imgdist, int widthdist, int heightdist) {
         try {
             File srcfile = new File(imgsrc);

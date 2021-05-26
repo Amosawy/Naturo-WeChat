@@ -30,7 +30,9 @@ public class User implements Serializable {
     @TableField(value = "create_time")
     private Date create_time;
 
+    @TableField(value = "pinyin")
     private String pinyin;
+
     public User(){
 
     }

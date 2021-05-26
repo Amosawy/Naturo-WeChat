@@ -1,10 +1,12 @@
 package com.awy.controller;
 
+import com.awy.Util.PinyinTool;
 import com.awy.entity.User;
 import com.awy.entity.base.BusinessException;
 import com.awy.entity.base.ResultEntity;
 import com.awy.entity.netty.ShutDownMsg;
 import com.awy.service.IUserService;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -30,7 +32,9 @@ public class UserController {
     private RabbitTemplate rabbitTemplate;
 
     @RequestMapping(value = "/register")
-    public ResultEntity register(User user){
+    public ResultEntity register(User user) throws BadHanyuPinyinOutputFormatCombination {
+        PinyinTool tool=new PinyinTool();
+        user.setPinyin(tool.toPinYin(user.getNickname(),"", PinyinTool.Type.LOWERCASE));
         Integer num=userService.register(user);
         if(num == 1){
             return ResultEntity.error("用户名已存在");

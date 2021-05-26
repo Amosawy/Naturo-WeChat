@@ -13,7 +13,7 @@ function setifRconn(){
 var ifRconn=true;
 function initWebsocket(param){
 				if(window.WebSocket){
-					websocket=new WebSocket("ws://172.20.10.4:8084/");
+					websocket=new WebSocket("ws://192.168.0.101:8084/");
 					websocket.onopen = function(){
 						console.info("重连"+flag);
 						ifRconn=true;
